@@ -1,0 +1,175 @@
+% Пример теста с двумя вариантами по языку Bash. Внимательно читайте 
+% комментарии к вопросам и командам!
+% Полная версия (с обложкой) пока не переведена
+
+\documentclass[12pt,a4paper]{article}
+
+% блок поддержки русского языка
+\usepackage[T1,T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian]{babel} % для корректной работы переносов строк
+\usepackage[a4paper]{geometry} % у американцев по умолчанию letter
+
+% микротипография - красивое уплотнение текста
+\usepackage[activate={true,nocompatibility},
+    final,
+    tracking=true,kerning=true,spacing=true,
+    factor=1100,
+    stretch=10,
+    shrink=10]{microtype}
+
+% \sloppy % полностью выключить выход за поля
+\tolerance=800 % не вылезать за поля по возможности
+
+% \usepackage{amsmath}
+% \usepackage{graphicx}
+
+\usepackage[
+  % НЕ ТРОГАТЬ, автоматически (рас)комментируется в gen.sh
+  % nosolutions,
+  answerkey, % раскрыть и убрать nosolutions - получим вариант с ответами
+  %
+  % vspacewithsolns, % ещё один вариант - печатать лист с ответами в конце
+  % coverpage,coverpagesumry=byparts, % обложка (TODO)
+    pointsonboth, % сумма баллов для каждого вопроса
+    totalsonright, % в конце каждой страницы - сумма баллов
+    forpaper,
+    useforms
+]{eqexam}
+
+% компактный заголовок
+\makeatletter
+\renewcommand\maketitledesign
+{%
+\begin{tabular}{p{\textwidth}}
+Ф.И.О., группа:~\hrulefill{}~<<\rule{6mm}{0.1pt}>>\rule{3cm}{0.1pt}~\the\year{} \\
+\\
+\normalsize\textbf{\webtitle\hfill\websubject}
+\\
+~
+\end{tabular}
+}
+\makeatother
+
+% локализация
+\renewcommand\leftmarginPtsTxt[1]{\small($#1~{\text{бал.}}$)}
+\renewcommand\leftmarginPtsEaTxt[1]{\small($#1~_{\text{отв.}}^{\text{бал.}}$)}
+\renewcommand\marginpointsboxtext[2]{\small$#1\,\text{бал.}$}
+\renewcommand\itemPTsTxt[1]{($#1$ бал.)}
+\renewcommand\totalsboxtext{\small$\theeqpointsthispage\,\text{бал.}$}
+
+\examNameLabel{Студент:}
+% чистим заголовки
+\lheadeqe{}
+\cheadeqe{--~\arabic{page}~--}
+\rheadeqe{}
+
+% название курса
+\title[T2]{Программирование Bash}
+% автор (не отображается по умолчанию)
+\author{П. Г. Рощин}
+% номер варианта задания, можно добавить ещё \vC{3} и т.п.
+\subject[C1]{Вариант \vA{1}\vB{2}}
+% \date{}
+% \keywords{Test~1, Section 001}
+
+% количество вариантов заданий
+\numVersions{2}
+
+% какой вариант генерим (a, b ...)
+\forVersion{a}
+% \forVersion{b}
+
+% наименование вуза для полной версии
+\university{НИЯУ <<МИФИ>>}
+% адрес электронной почты (не используется)
+% \email{bash@example.ru}
+
+\begin{document}
+
+% шапка для заполнения ФИО студента, номер варианта
+\maketitle
+
+\begin{exam}[Часть I.]{Part1}
+
+% инструкция к экзамену (а кто их читает?)
+% \begin{instructions}[Часть I.]
+% Solve each of the problems without error. If you make an error,
+% points will be subtracted from your total score.
+% \end{instructions}
+
+% простой вопрос с произвольным ответом. Варианты скрыты в \vA{} \vB{} и т.п.
+% какой у нас вариант - такой и появится блок. За вопрос 9 баллов
+\begin{problem}[9]
+Это вопрос для \vA{первого}\vB{второго} варианта.
+\begin{solution}[2cm]
+Это ответ для \vA{первого}\vB{второго} варианта.
+\end{solution}
+\end{problem}
+
+% вопрос с выбором одного варианта ответа
+\begin{problem}[1]
+Как узнать время работы системы с момента последней перезагрузки?
+    \begin{answers}{4} % 4 колонки в таблице для 4 ответов
+    \Ans0 time & \Ans0 datetime & \Ans1 uptime & \Ans0 никак
+    \end{answers}
+\end{problem}
+
+% вопрос с длинными вариантами ответа
+\begin{problem}[1]
+Что делает команда \texttt{mkdir example}?
+    \begin{answers}{1}
+    \Ans0 Создаёт файл с именем example
+    \Ans1 Создаёт каталог с именем example % правильный ответ
+    \Ans0 Показывает пример использования команды mkdir
+    \end{answers}
+\end{problem}
+
+% вопрос с длинными вариантами ответа с отличием по вариантам
+\begin{problem}[1]
+Назначение переменной \texttt{\vA{\$\#}\vB{\$?}} --- это:
+    \begin{answers}{1}
+    \Ans{\vA{0}\vB{1}} Код возврата последней выполненной команды
+    \Ans{\vA{1}\vB{0}} Количество аргументов, переданных сценарию
+    \Ans0 Это некорректная конструкция
+    \end{answers}
+\end{problem}
+
+% вопросы "правда или ложь"
+\begin{problem*}[6]
+Поставьте <<$+$>> для корректных синтаксических конструкций в bash и <<$-$>>
+для некорректных.
+\fillinWidth\defaultTFwidth % для аккуратного вида
+\begin{parts}
+    \item \TF{+} \texttt{[ \$x -\vA{g}\vB{l}t \$y ]}
+    \item \TF{--} \texttt{( \$x -\vA{l}\vB{g}t \$y )}
+    \item \TF{--} \texttt{\$x -\vA{l}\vB{g}t \$y}
+    \item \TF{+} \texttt{test \$x -\vA{g}\vB{l}t \$y}
+% два варианта, каждый внутри своего окружения
+\vA{
+    \item \TF{+} \texttt{for i in a b c; do echo \$i; done}
+    \item \TF{--} \texttt{for \char`\"{}\$i\char`\"{} in a b c; do echo \$i; done}
+}
+\vB{
+    \item \TF{--} \texttt{for \$j in a b c; do echo \$j; done}
+    \item \TF{+} \texttt{for j in a b c; do echo "\$j"; done}
+}
+\end{parts}
+\end{problem*}
+
+% Заполнение пропущенных слов, для пущей запутанности заставляем компьютер
+% самостоятельно суммировать баллы за задание
+\begin{problem*}[\auto]
+Впишите правильные команды
+\fillinWidth\defaultTFwidth % для аккуратного вида
+\begin{parts}
+    \item \PTs{1} Команда \fillin{7mm}{wc} используется для подсчёта слов.
+    \item \PTs{2} Для получения прав на исполнение нового сценария нужно выполнить команду \fillin{20mm}{chmod +x}.
+    \item \PTs{1} Команда \fillin{7mm}{ls} отображает содержимое текущего каталога.
+    \item \PTs{1} Команда \fillin{10mm}{pwd} выводит путь до текущего каталога.
+\end{parts}
+\end{problem*}
+
+\end{exam}
+
+\end{document}

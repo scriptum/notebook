@@ -1,0 +1,10 @@
+tmp
+*.aux
+*.log
+*.sol
+*.qsl
+*.pdf
+*_xdefs.cut
+*.tar.gz
+*~
+*#
