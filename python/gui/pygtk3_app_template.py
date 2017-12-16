@@ -11,27 +11,25 @@ import sys
 class MyApplication(Gtk.Application):
     def __init__(self, *args, **kwargs):
         super(MyApplication, self).__init__(*args, application_id="org.myapplication",
-            flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
-            **kwargs)
+                                            flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE,
+                                            **kwargs)
         self.window = None
         self.logo = None
         self.title = "My app"
         self.add_main_option("test", ord("t"), GLib.OptionFlags.NONE,
                              GLib.OptionArg.NONE, "Command line test", None)
 
-
     def do_startup(self):
         Gtk.Application.do_startup(self)
-
 
     def do_activate(self):
         if not self.window:
             self.window = Gtk.ApplicationWindow(application=self)
-            
+
             action = Gio.SimpleAction.new("quit", None)
             action.connect("activate", self.on_quit)
             self.add_action(action)
-            
+
             action = Gio.SimpleAction.new("about", None)
             action.connect("activate", self.on_about)
             self.add_action(action)
@@ -49,9 +47,9 @@ class MyApplication(Gtk.Application):
             hb.set_show_close_button(True)
             hb.props.title = self.title
             self.window.set_titlebar(hb)
-            
+
             self.window.set_default_size(640, 480)
-            
+
             sw = Gtk.ScrolledWindow()
             self.window.add(sw)
             self.window.show_all()
@@ -69,7 +67,7 @@ class MyApplication(Gtk.Application):
 
     def on_about(self, action, param):
         about = Gtk.AboutDialog(transient_for=self.window)
-        about.set_destroy_with_parent(True);
+        about.set_destroy_with_parent(True)
         about.set_logo(self.logo)
         about.set_authors(["Pavel Roschin"])
         about.connect("response", lambda self, rid: about.hide_on_delete())
@@ -77,6 +75,7 @@ class MyApplication(Gtk.Application):
 
     def on_quit(self, action, param):
         self.quit()
+
 
 if __name__ == "__main__":
     app = MyApplication()
