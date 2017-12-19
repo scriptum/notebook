@@ -1,0 +1,6 @@
+lib
+lib64
+include
+bin
+pip-selfcheck.json
+celerybeat-schedule
