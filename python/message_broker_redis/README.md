@@ -1,4 +1,6 @@
-# Prepare
+# Celery usage example
+
+## Prepare
 
 ```sh
 cd path/to/notebook/python/message_broker_redis
@@ -6,7 +8,7 @@ virtualenv .
 pip install celery redis
 ```
 
-# Run celery
+## Run celery
 
 `-B` is needed for scheduler.
 
@@ -14,7 +16,7 @@ pip install celery redis
 ./bin/celery worker -B
 ```
 
-# Run client
+## Run client
 
 ```sh
 ./bin/python caller.py
