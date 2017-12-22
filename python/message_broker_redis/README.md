@@ -5,7 +5,7 @@
 ```sh
 cd path/to/notebook/python/message_broker_redis
 virtualenv .
-pip install celery redis
+./bin/pip install celery redis
 ```
 
 ## Run celery
