@@ -2,6 +2,7 @@
 Probably simplest screenshot application
 gcc -O2 -o X11Screenshot X11Screenshot.c -lX11
 ./X11Screenshot > screenshot.ppm
+./X11Screenshot | convert - -resize 512 screenshot.jpg
 */
 
 #include <X11/Xlib.h>
