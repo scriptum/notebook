@@ -4,6 +4,7 @@ tmp
 *.sol
 *.qsl
 *.pdf
+*.dvi
 *_xdefs.cut
 *.tar.gz
 *~
