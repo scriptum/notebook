@@ -1,0 +1,15 @@
+if hash react-native 2>/dev/null; then
+    alias rnra='react-native run-android'
+    alias rn='react-native'
+    alias rnla='react-native log-android'
+    alias rns='react-native start'
+    alias rnl='react-native link'
+    alias rnul='react-native unlink'
+    alias ni='npm install'
+    alias nps='npm search'
+    alias nt='npm test'
+    alias npi='npm info'
+    alias yrf='yarn flow'
+    alias yra='yarn add'
+    alias yrad='yarn add --dev'
+fi
