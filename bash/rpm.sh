@@ -112,4 +112,12 @@ for k in it:
         }
     fi
     complete -F _rpm_installed_packages ql i qi ye yu
+
+
+    rpm.show_spec()
+    {
+        for f in "$@"; do
+            rpm2cpio "$f" | cpio --to-stdout -i "*.spec"
+        done
+    }
 fi #end of rpm
