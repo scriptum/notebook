@@ -18,8 +18,8 @@
 
 exports.execute = function (args) {
   const vscode = require('vscode');
-  let editor = vscode.window.activeTextEditor;
-  let document = editor.document;
+  const editor = vscode.window.activeTextEditor;
+  const document = editor.document;
   editor.edit(editBuilder => {
     editor.selections.map(sel => {
       let text = editor.document.getText(sel);
