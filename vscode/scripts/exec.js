@@ -3,6 +3,9 @@
 
 exports.execute = function(args) {
   const vscode = require('vscode');
+  const editor = vscode.window.activeTextEditor;
+  const document = editor.document;
+  const path = document.uri.path;
   const exec = require('child_process').exec;
   args.options.map(opt => {
     exec(eval(`\`${opt.cmd}\``), function(error, stdout, stderr) {
