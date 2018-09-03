@@ -102,3 +102,5 @@ koi7()
 {
     "$@" |& iconv -cf KOI-7
 }
+
+hash qrencode 2>/dev/null && hash zsel 2>/dev/null alias qr='xsel | qrencode -t ANSIUTF8 -o-'
