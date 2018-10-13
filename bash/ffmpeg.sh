@@ -151,7 +151,8 @@ if hash ffmpeg 2>/dev/null; then # ffmpeg
   ffmpeg.check()
   {
     for f in "$@"; do
-      ffmpeg -v error -i "$f" -f null -
+      ffmpeg -v error -i "$f" -f null - && echo -n '[ OK ] ' || echo -n '[FAIL] '
+      echo "'$f'"
     done
   }
 
