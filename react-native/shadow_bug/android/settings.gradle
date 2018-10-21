@@ -1,0 +1,3 @@
+rootProject.name = 'shadow_bug'
+
+include ':app'
