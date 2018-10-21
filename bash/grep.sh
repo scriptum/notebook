@@ -32,13 +32,13 @@ alias grep.js=srj
 
 # search anything
 sr() {
-  local inc
+  local inc=()
   # e.g. sr *.m4 SOME_MACRO
   while [[ $1 == \** ]]; do
-    inc="$inc --include=$1"
+    inc+="--include=$1"
     shift
   done
-  /bin/grep --color=always -iInRs --exclude-dir=.git --exclude-dir=.svn "$inc" "$@" . 2> /dev/null | less -XFRS
+  /bin/grep --color=always -iInRs --exclude-dir=.git --exclude-dir=.svn "${inc[@]}" "$@" . 2> /dev/null | less -XFRS
 }
 
 grep.iso() {
