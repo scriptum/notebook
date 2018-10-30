@@ -26,7 +26,7 @@ alias grep.asm=srs
 
 # search in javascript
 srj() {
-  /bin/grep --color=always -InRswa '--include=*.js' "$@" . 2> /dev/null | less -XFRS
+  /bin/grep --color=always --exclude-dir=node_modules --exclude-dir=.git --exclude-dir=.svn -InRswa '--include=*.js' "$@" . 2> /dev/null | less -XFRS
 }
 alias grep.js=srj
 
@@ -38,7 +38,7 @@ sr() {
     inc+="--include=$1"
     shift
   done
-  /bin/grep --color=always -iInRs --exclude-dir=.git --exclude-dir=.svn "${inc[@]}" "$@" . 2> /dev/null | less -XFRS
+  /bin/grep --color=always -iInRs --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.idea  --exclude-dir=.vscode "${inc[@]}" "$@" . 2> /dev/null | less -XFRS
 }
 
 grep.iso() {
