@@ -16,12 +16,14 @@ if hash git 2>/dev/null; then # git
     print $1, $2, $3$4 $5}' | $PAGER
   }
   alias gpf='git push --force'
-  alias gp='git pull --rebase && git push'
+  alias gp='git pull --rebase && git submodule update --init --recursive && git push'
   alias gpu='git push -u'
   alias gr='git remote -v'
   alias gri='git rebase -i'
   alias gs='git status'
-
+  alias gsu='git submodule update --init --recursive'
+  alias gsi='git submodule init'
+  alias gsa='git submodule add'
 
   alias curl='curl -s'
 
