@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  fib:
+    build: .
+    ports:
+      - 5000:5000
+    # comment out lines below for development use
+    # environment:
+    #   FLASK_DEBUG: 'True'
+    # volumes:
+    #   - ./app:/usr/src/app

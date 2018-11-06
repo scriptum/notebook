@@ -11,7 +11,7 @@ app = Flask(__name__)
 @app.route("/<int:number>", methods=['GET'])
 def get_fib(number):
     ''' Return Fibonacci '''
-    return jsonify(str(gmpy2.fib(int(number))))
+    return str(gmpy2.fib(int(number)))
 
 
 if __name__ == "__main__":
