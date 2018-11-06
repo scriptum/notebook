@@ -46,9 +46,14 @@ if hash git 2>/dev/null; then # git
 
   # rebase whole git to change author
   git.author() {
+    if [[ -z $1 ]]; then
+      echo 'Usage: git.author <email-filter>'
+      echo 'E.g: git.author "*@mail.ru|*myoldmail*"'
+      return -1
+    fi
     git filter-branch -f --env-filter '
     case $GIT_COMMITTER_EMAIL in
-    *scriptum*|*roschin*|*rpg*)
+    '"$1"')
     export GIT_COMMITTER_NAME=$(git config user.name)
     export GIT_COMMITTER_EMAIL=$(git config user.email)
     export GIT_AUTHOR_NAME=$(git config user.name)
