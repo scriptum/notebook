@@ -46,18 +46,15 @@ if hash git 2>/dev/null; then # git
 
   # rebase whole git to change author
   git.author() {
-    if [[ -z $_MY_NAME ]]; then
-      echo "Export _MY_NAME and _MY_MAIL environment variables" >&2
-    fi
-    git filter-branch -f --env-filter "
-    case \$GIT_COMMITTER_EMAIL in
+    git filter-branch -f --env-filter '
+    case $GIT_COMMITTER_EMAIL in
     *scriptum*|*roschin*|*rpg*)
-    export GIT_COMMITTER_NAME='$_MY_NAME'
-    export GIT_COMMITTER_EMAIL='$_MY_MAIL'
-    export GIT_AUTHOR_NAME='$_MY_NAME'
-    export GIT_AUTHOR_EMAIL='$_MY_MAIL'
+    export GIT_COMMITTER_NAME=$(git config user.name)
+    export GIT_COMMITTER_EMAIL=$(git config user.email)
+    export GIT_AUTHOR_NAME=$(git config user.name)
+    export GIT_AUTHOR_EMAIL=$(git config user.email)
     ;;
-    esac" --tag-name-filter cat -- --branches --tags
+    esac' --tag-name-filter cat -- --branches --tags
   }
 
   # search unmerged branches
