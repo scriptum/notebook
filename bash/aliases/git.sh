@@ -51,15 +51,16 @@ if hash git 2>/dev/null; then # git
       echo 'E.g: git.author "*@mail.ru|*myoldmail*"'
       return -1
     fi
-    git filter-branch -f --env-filter '
-    case $GIT_COMMITTER_EMAIL in
+    local script='
+    case $GIT_AUTHOR_EMAIL in
     '"$1"')
     export GIT_COMMITTER_NAME=$(git config user.name)
     export GIT_COMMITTER_EMAIL=$(git config user.email)
     export GIT_AUTHOR_NAME=$(git config user.name)
     export GIT_AUTHOR_EMAIL=$(git config user.email)
     ;;
-    esac' --tag-name-filter cat -- --branches --tags
+    esac'
+    git filter-branch -f --env-filter "$script" --tag-name-filter cat -- --branches --tags
   }
 
   # search unmerged branches
