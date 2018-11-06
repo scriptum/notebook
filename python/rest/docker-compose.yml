@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  todo:
+    build: .
+    ports:
+      - 5000:5000
+    # comment lines below for production use
+    environment:
+      FLASK_DEBUG: 'True'
+    volumes:
+      - ./todo.py:/todo.py
