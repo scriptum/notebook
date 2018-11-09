@@ -26,3 +26,15 @@ openssl.show() {
     fi
   done | less -XFRS
 }
+
+openssl.crt2der() {
+  for f in "$@"; do
+   openssl x509 -in "${f}" -out "${f%.*}.der" -outform der
+  done
+}
+
+openssl.crt2pem() {
+  for f in "$@"; do
+   openssl x509 -in "${f}" -out "${f%.*}.pem" -outform pem
+  done
+}
