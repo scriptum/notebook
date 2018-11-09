@@ -156,6 +156,15 @@ if hash ffmpeg 2>/dev/null; then # ffmpeg
     done
   }
 
+  ffmpeg.record-screen(){
+    local x264opts=bframes=16:ipratio=3:pbratio=3:keyint=750:deblock=0,0,0:aq_strength=0:psy_rd=1:b_bias=100:fast_pskip=0:qcomp=1
+    local res=$(xrandr --current | awk -F'[ +]' '/connected /{print $3;exit}')
+    ffmpeg -video_size "$res" -framerate 10 -f x11grab -i :0 \
+      -preset veryslow -crf 30 \
+      -x264opts "$x264opts" \
+      "screen-record-$(date +%F).mp4"
+  }
+
   # better to use Peek;)
   screencast.win() {
     local wid=$(wmctrl -a :SELECT: -v |& grep ^Using)
