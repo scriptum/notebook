@@ -4,12 +4,12 @@
 
 openssl.show() {
   for f in "$@"; do
-    local type=
+    local type="" head
     case $f in
       *.crt|*.cer|*.CSR|*.CRT) type=x509 ;;
       *.[cC][sS][rR]) type=req ;;
       *.pem)
-        let head=$(grep -m1 -- '-----BEGIN' "$f")
+        head=$(grep -m1 -- '-----BEGIN' "$f")
         case $head in
           *REQUEST---*)     type=req ;;
           *CERTIFICATE---*) type=x509 ;;
@@ -27,6 +27,12 @@ openssl.show() {
   done | less -XFRS
 }
 
+openssl.csr.verify() {
+  for f in "$@"; do
+   openssl req -text -verify -noout -in "$f"
+  done
+}
+
 openssl.crt2der() {
   for f in "$@"; do
    openssl x509 -in "${f}" -out "${f%.*}.der" -outform der
@@ -37,4 +43,33 @@ openssl.crt2pem() {
   for f in "$@"; do
    openssl x509 -in "${f}" -out "${f%.*}.pem" -outform pem
   done
+}
+
+openssl.genrsa() {
+  local key=$1 len=$2
+  openssl genrsa -out "$key" "$len"
+}
+
+openssl.genrsa.2048() {
+  local key=$1
+  openssl.genkey "$key" 2048
+}
+
+openssl.genrsa.4096() {
+  local key=$1
+  openssl.genkey "$key" 4096
+}
+
+openssl.pubkey() {
+  local key=$1 pubkey=$2
+  openssl rsa -in "$key" -pubout -out "$pubkey"
+}
+
+openssl.csr() {
+  local key=$1 csr=$2
+  openssl req -out "$csr" -key "$key" -new -sha256
+}
+
+openssl.csr.sign() {
+  openssl x509 -in "$csr" -out "${csr%.*}.cer" -req -signkey $key -days 100
 }
