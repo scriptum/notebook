@@ -18,7 +18,7 @@ if hash git 2>/dev/null; then # git
   alias gpf='git push --force'
   alias gp='git pull --rebase && git submodule update --init --recursive && git push'
   alias gpu='git push -u'
-  alias gr='git remote -v'
+  # alias gr='git remote -v'
   alias gri='git rebase -i'
   alias gs='git status'
   alias gsu='git submodule update --init --recursive'
