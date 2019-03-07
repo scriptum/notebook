@@ -4,30 +4,18 @@
 # rm is aliased to rm -i in some distros
 [[ $(type -p rm) == "" ]] && unalias rm 2>/dev/null
 
-__RMTHREAD=""
-rm()
-{
-    local threshold=10
-    if [[ $1 == "-fr" || $1 == "-rf" || $# -gt $threshold ]]; then
-        local sec=10
-        {(
-            echo "After $sec s files wil be removed:"
-            echo "$@"
-            sleep $sec
-            /bin/rm "$@"
-        )& disown;} 2>/dev/null
-        __RMTHREAD=$!
-        echo "Type $(tput bold)mr$(tput sgr0) to cancel"
-    else
-        /bin/rm "$@"
-    fi
+if [[ $(uname) == Darwin ]]; then
+rm() {
+    [[ $1 == "-fr" || $1 == "-rf" ]] && shift
+    trash "$@"
 }
-mr()
-{
-    kill $__RMTHREAD 2>/dev/null
-    __RMTHREAD=""
+else
+rm() {
+    [[ $1 == "-fr" || $1 == "-rf" ]] && shift
+    gio trash "$@"
 }
-rrm()
-{
+fi
+
+rrm() {
     /bin/rm "$@"
 }
