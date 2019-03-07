@@ -32,11 +32,11 @@ if hash rpm 2>/dev/null; then # rpm
     alias yi="sudo $_PKGMGR install -y"
     alias yr="sudo $_PKGMGR reinstall -y"
     alias yu="sudo $_PKGMGR update -y"
-    if hash repoquery 2>/dev/null; then # repoquery present
-        alias yinf="repoquery --info"
-        alias yf="repoquery --info"
+    if hash repoquery 2>/dev/null && ! hash dnf 2>/dev/null; then # repoquery present
         alias yp="repoquery --whatprovides --qf %{name}"
         alias yps="repoquery --whatprovides --qf %{name} -s"
+        alias yinf="repoquery --info"
+        alias yf="repoquery --info"
         alias ys="repoquery --search"
     else
         alias yinf="$_PKGMGR -C info"
