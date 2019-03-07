@@ -45,18 +45,18 @@ alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
 alias .....='cd ../../../..'
-alias dc='cd'
-
 
 # reload bashrc
 alias .b='. ~/.bashrc'
 # edit bashrc
 alias rced="$_MY_EDITOR ~/.bashrc"
 
-# do not show russian man pages
-man() {
-  LANG=C LC_ALL=C /bin/man "$@"
-}
+if [[ -x /bin/man ]]; then
+  # do not show russian man pages
+  man() {
+    LANG=C LC_ALL=C /bin/man "$@"
+  }
+fi
 
 dush() {
   case $# in
