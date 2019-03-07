@@ -72,4 +72,8 @@ if hash git 2>/dev/null; then # git
   git.github() {
     o "$(git remote -v | grep origin | awk 'NR==1{print $2}' | sed -r 's|git@(.*):|https://\1/|')" >& /dev/null
   }
+  git.auto.tags.gradle() {
+    git grep ^version $(git rev-list --all -- build.gradle) -- build.gradle \
+      | sort -uk2 | awk -F"[:']" '{print "git tag -a "$4" "$1" -m auto_tag"}' | bash
+  }
 fi
