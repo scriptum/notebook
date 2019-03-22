@@ -7,7 +7,7 @@ if hash git 2>/dev/null; then # git
   alias gco='git checkout'
   alias gd='git diff --color'
   alias gdt='git difftool -y'
-  gl(){
+  gl() {
     git log -n30 \
       --pretty=format:'%C(yellow)%h|%Cred%ad|%Cblue|%aN|%Cred%d %Creset%s' \
       --date=format:%d.%m | \
@@ -20,6 +20,7 @@ if hash git 2>/dev/null; then # git
   alias gpu='git push -u'
   # alias gr='git remote -v'
   alias gri='git rebase -i'
+  alias gir='git rebase'
   alias gs='git status'
   alias gsu='git submodule update --init --recursive'
   alias gsi='git submodule init'
@@ -28,8 +29,12 @@ if hash git 2>/dev/null; then # git
   alias curl='curl -s'
 
   if ! type -p __git_complete > /dev/null; then
-    __git_complete(){
-      complete -o default -o nospace -F $2 $1
+    __git_complete ()
+    {
+      local wrapper="__git_wrap${2}"
+      eval "$wrapper () { __git_func_wrap $2 ; }"
+      complete -o bashdefault -o default -o nospace -F $wrapper $1 2>/dev/null \
+        || complete -o default -o nospace -F $wrapper $1
     }
   fi
   __git_complete ga _git_add
@@ -38,11 +43,17 @@ if hash git 2>/dev/null; then # git
   __git_complete gc _git_commit
   __git_complete gco _git_checkout
   __git_complete gd _git_diff
+  __git_complete gdt _git_diff
   __git_complete gpf _git_push
   __git_complete gp _git_push
   __git_complete gpu _git_push
-  __git_complete gr _git_remote
+  __git_complete gri _git_rebase
+  __git_complete gir _git_rebase
+  # __git_complete gr _git_remote
   __git_complete gs _git_status
+  __git_complete gsu _git_submodule
+  __git_complete gsi _git_submodule
+  __git_complete gsa _git_submodule
 
   # rebase whole git to change author
   git.author() {
