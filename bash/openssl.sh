@@ -125,13 +125,13 @@ openssl.cer.getchain() {
   fi
   local uri
   for f in "$@"; do
-    uri=$(openssl.issuer "$f")
-    wget -O- -q "$uri" | openssl x509 -inform der -outform pem -out "${f%.cer}-sub.pem"
-    uri=$(openssl.issuer "${f%.cer}-sub.pem")
-    wget -O- -q "$uri" | openssl x509 -inform der -outform pem -out "${f%.cer}-root.pem"
-    cat "${f%.cer}-root.pem" "${f%.cer}-sub.pem" > "${f%.cer}-chain.pem"
-    openssl x509 -inform der -in "$f" -outform pem -out "${f%.cer}.pem"
-    rm "${f%.cer}-root.pem" "${f%.cer}-sub.pem"
+    uri=$(openssl.issuer "$f") && \
+    wget -O- -q "$uri" | openssl x509 -inform der -outform pem -out "${f%.cer}-sub.pem" && \
+    uri=$(openssl.issuer "${f%.cer}-sub.pem") && \
+    wget -O- -q "$uri" | openssl x509 -inform der -outform pem -out "${f%.cer}-root.pem" && \
+    cat "${f%.cer}-root.pem" "${f%.cer}-sub.pem" > "${f%.cer}-chain.pem" && \
+    openssl x509 -inform der -in "$f" -outform pem -out "${f%.cer}.pem" && \
+    rm "${f%.cer}-root.pem" "${f%.cer}-sub.pem" && \
     mv "$f" "$f.bak"
   done
 }
@@ -147,7 +147,13 @@ openssl.csr() {
 }
 
 openssl.csr.sign() {
-  openssl x509 -in "$csr" -out "${csr%.*}.cer" -req -signkey $key -days 100
+  if [[ -z $1 ]]; then
+    echo 'Sign a CSR with given private key and issue certificate'
+    echo "Usage: ${FUNCNAME[0]} CSR PRIVKEY"
+    return 1
+  fi
+  local csr=$1 key=$2
+  openssl x509 -in "$csr" -out "${csr%.*}.cer" -req -signkey $key -days 365 -sha256
 }
 
 openssl.p12.extract() {
