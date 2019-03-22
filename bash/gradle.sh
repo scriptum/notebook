@@ -3,8 +3,7 @@ gr() {
 }
 
 _complete_gr() {
-  local candidates cur
-  _init_completion -s || return
+  local candidates
   local words='build
 docker
 publish
@@ -16,9 +15,9 @@ clean
 test
 check'
 
-  candidates=$(grep "^$cur" <<< "$words")
+  candidates=$(grep "^$2" <<< "$words")
 
-  COMPREPLY=( $(compgen -W "${candidates}" -- "$cur") )
+  COMPREPLY=( $(compgen -W "${candidates}" -- "$2") )
 }
 
 complete -F _complete_gr -o default gr

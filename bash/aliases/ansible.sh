@@ -19,10 +19,7 @@ if hash ansible-playbook 2>/dev/null; then
     }
 
     _ap() {
-        local cur prev words cword
-        _init_completion || return
         _filedir yml
-        return 0
     }
     complete -F _ap ap
 fi

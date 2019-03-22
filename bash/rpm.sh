@@ -106,9 +106,7 @@ for k in it:
     if [[ -f /var/lib/rpm/Name ]]; then
         # fast version of rpm -qa for autocompletion
         _rpm_installed_packages() {
-            local cur
-            _init_completion -s || return
-            COMPREPLY=( $( compgen -W "$(rpm.qa "$cur")" -- "$cur" ) )
+            COMPREPLY=( $( compgen -W "$(rpm.qa "$2")" -- "$2" ) )
         }
     fi
     complete -F _rpm_installed_packages ql i qi ye yu

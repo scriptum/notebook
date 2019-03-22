@@ -4,7 +4,7 @@
 # rm is aliased to rm -i in some distros
 [[ $(type -p rm) == "" ]] && unalias rm 2>/dev/null
 
-if [[ $(uname) == Darwin ]]; then
+if [[ $(uname) == Darwin ]]; then # Mac OS
 rm() {
     [[ $1 == "-fr" || $1 == "-rf" ]] && shift
     trash "$@"
