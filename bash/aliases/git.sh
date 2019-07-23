@@ -17,6 +17,8 @@ if hash git 2>/dev/null; then # git
   }
   alias gpf='git push --force'
   alias gp='git pull --rebase && git submodule update --init --recursive && git push'
+  alias gpr='for f in $(find -name \*.git); do pushd $(dirname $f);git checkout master; git pull --rebase;popd; done'
+  alias gpur='for f in $(find -name \*.git); do pushd $(dirname $f);git pull --rebase;git push;popd;done'
   alias gpu='git push -u'
   # alias gr='git remote -v'
   alias gri='git rebase -i'
@@ -27,6 +29,14 @@ if hash git 2>/dev/null; then # git
   alias gsa='git submodule add'
 
   alias curl='curl -s'
+
+  gpur() {
+    for f in $(find -name .git | sort -Vr); do 
+      pushd $(dirname $f)
+      git pull --rebase && git push
+      popd
+    done
+  }
 
   if ! type -p __git_complete > /dev/null; then
     __git_complete ()
