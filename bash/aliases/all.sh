@@ -72,6 +72,17 @@ fld() {
   awk '{print $'$1'}'
 }
 
+fldt() {
+  local arg=$1
+  shift
+  cut -d$'\t' -f"$arg" "$@"
+}
+
+avg() {
+  local n=${1-1}
+  awk -F'\t' '{sub(",", ".", $'$n');s+=$'$n';c+=1}END{print c, s, s/c}'
+}
+
 # get frequency of nth field in file, e.g.:
 # - most frequent letter: fold -w1 /etc/passwd | freq
 # - cut -d: -f7 /etc/passwd | freq
@@ -80,17 +91,13 @@ freq() {
   local n=0
   [[ $# -ge 1 ]] && n="$1"
   # use awk - it allows to get fields
-  awk '{d[$'$n']++}END{for(k in d){printf "%10d %s\n", d[k], k}}' | sort -n
+  awk '{d[$'$n']++}END{for(k in d){printf "%10d\t%s\n", d[k], k}}' | sort -n
 }
 
 hash htop 2>/dev/null && alias top=htop
 
 urldecode() {
-    local url
-    while read -r url; do
-        url="${url//+/ }"
-        printf '%b\n' "${url//%/\\x}"
-    done
+  perl -ne 'use URI::Encode qw(uri_decode); print(uri_decode($_))'
 }
 
 recentlyused() {

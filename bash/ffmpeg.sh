@@ -98,9 +98,9 @@ if hash ffmpeg 2>/dev/null; then # ffmpeg
       return
     fi
     # filters
-    local gain=-4
-    local norm=treble=g=$gain,bass=g=$gain
-    local normalize=$norm,dynaudnorm=10:5:0.99:s=3,
+    local gain=-8
+    local norm=treble=g=-10,bass=g=$gain
+    local normalize=$norm,dynaudnorm=10:5:0.99,
     # do not use -ac 1 because it may cause clipping
     local mono="pan=mono|c0=.5*c0+.5*c1,"
     local silenceremove=silenceremove=1:0.1:0.01:-1:0.5:0.01:1
@@ -156,13 +156,30 @@ if hash ffmpeg 2>/dev/null; then # ffmpeg
     done
   }
 
+  ffmpeg.record-zoom(){
+    local nvencopts="-c:v h264_nvenc -level 5.1 -profile:v high -aq-strength 15 -crf 43"
+    local vp9opts="-b:v 0 -b:a 16k -threads 15 -speed 1 -tile-columns 6 -frame-parallel 1 -g 900 -row-mt 1 -auto-alt-ref 1 -pix_fmt yuv420p -crf 43"
+    local x264opts="-crf 10 -x264opts keyint=100:deblock=0,0,0:fast_pskip=0:qcomp=1"
+    local res=$(xrandr --current | awk -F'[ +]' '/ connected /{print $4;exit}')
+   ffmpeg -r 25 -use_wallclock_as_timestamps 1 -f x11grab -video_size 1920x1080 -i :0+0,1200 \
+     -f alsa -r 25 -ac 1 -i pulse -b:a 64k -c:a libvorbis -threads 15 -pix_fmt yuv420p -preset slow $x264opts \
+     "screen-record-$(date +%F-%H-%M).mkv"
+    #ffmpeg -video_size "$res" -r 25 -use_wallclock_as_timestamps 1 -f x11grab -video_size 1920x1080 -i :0+0,1200 -r 25 \
+    #  -threads 15 -pix_fmt yuv420p -preset slow $x264opts \
+    #  "screen-record-$(date +%F-%H-%M).mkv"
+  }
+  
   ffmpeg.record-screen(){
-    local x264opts=bframes=16:ipratio=3:pbratio=3:keyint=750:deblock=0,0,0:aq_strength=0:psy_rd=1:b_bias=100:fast_pskip=0:qcomp=1
-    local res=$(xrandr --current | awk -F'[ +]' '/connected /{print $3;exit}')
-    ffmpeg -video_size "$res" -framerate 10 -f x11grab -i :0 \
-      -preset veryslow -crf 30 \
-      -x264opts "$x264opts" \
-      "screen-record-$(date +%F).mp4"
+    local nvencopts="-c:v h264_nvenc -level 5.1 -profile:v high -aq-strength 15 -crf 43"
+    local vp9opts="-b:v 0 -b:a 16k -threads 15 -speed 1 -tile-columns 6 -frame-parallel 1 -g 900 -row-mt 1 -auto-alt-ref 1 -pix_fmt yuv420p -crf 43"
+    local x264opts="-crf 10 -x264opts keyint=100:deblock=0,0,0:fast_pskip=0:qcomp=1"
+    local res=$(xrandr --current | awk -F'[ +]' '/ connected /{print $4;exit}')
+   # ffmpeg -video_size "$res" -r 25 -use_wallclock_as_timestamps 1 -f x11grab -video_size 1920x1080 -i :0+0,1200 \
+   #   -f alsa -r 25 -ac 1 -i pulse -b:a 64k -c:a libvorbis -threads 15 -pix_fmt yuv420p -preset slow $x264opts \
+   #   "screen-record-$(date +%F-%H-%M).mkv"
+    ffmpeg -r 25 -use_wallclock_as_timestamps 1 -f x11grab -video_size 1920x1080 -r 25 \
+      -threads 15 -pix_fmt yuv420p -preset slow $x264opts \
+      "screen-record-$(date +%F-%H-%M).mkv"
   }
 
   # better to use Peek;)

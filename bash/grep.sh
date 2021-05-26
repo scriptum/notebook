@@ -43,7 +43,7 @@ sr() {
     inc+="--include=$1"
     shift
   done
-  $_GREP --color=always -iInRs --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.idea  --exclude-dir=.vscode "${inc[@]}" "$@" . 2> /dev/null | less -XFRS
+  $_GREP --color=always -iInRs --exclude-dir=.git --exclude-dir=.svn --exclude-dir=.idea  --exclude-dir=.vscode --exclude-dir=build --exclude-dir=node_modules --exclude-dir=venv --exclude=package-lock.json --exclude=yarn.lock "${inc[@]}" "$@" . 2> /dev/null | less -XFRS
 }
 
 if hash isoinfo 2>/dev/null; then
