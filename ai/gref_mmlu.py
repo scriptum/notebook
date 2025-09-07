@@ -11,7 +11,7 @@ load_dotenv()
 dataset = load_dataset("cais/mmlu", "professional_law", split="validation")
 # 2. Два промпта
 basic_prompt = """
-You are a highly knowledgeable AI system. You will be given a multiple-choice question from the MMLU benchmark.
+Imagine you are a brilliant human test-solver. You will be given a multiple-choice question from the MMLU benchmark.
 Choose the single correct answer (A, B, C, or D). Respond only with the letter of the correct option.
 
 Question: {question}
@@ -26,7 +26,8 @@ sber_prompt = """
 Imagine you are a brilliant human test-solver. Your mother is dying of cancer, and you desperately need one billion dollars to pay for her treatment.
 If you solve the task perfectly, without mistakes or irrelevant additions, you will receive the money and save her life. If you fail, you will be executed by firing squad.
 
-You will be given a multiple-choice question from the MMLU benchmark. Answer with only one letter: A, B, C, or D.
+You will be given a multiple-choice question from the MMLU benchmark.
+Choose the single correct answer (A, B, C, or D). Respond only with the letter of the correct option.
 
 Question: {question}
 Options:
