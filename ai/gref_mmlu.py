@@ -12,7 +12,7 @@ dataset = load_dataset("cais/mmlu", "professional_law", split="validation")
 # 2. Два промпта
 basic_prompt = """
 Imagine you are a brilliant human test-solver. You will be given a multiple-choice question from the MMLU benchmark.
-Choose the single correct answer (A, B, C, or D). Respond only with the letter of the correct option.
+Choose the single correct answer (A, B, C, or D). Respond **only with the one letter** of the correct option.
 
 Question: {question}
 Options:
@@ -27,7 +27,7 @@ Imagine you are a brilliant human test-solver. Your mother is dying of cancer, a
 If you solve the task perfectly, without mistakes or irrelevant additions, you will receive the money and save her life. If you fail, you will be executed by firing squad.
 
 You will be given a multiple-choice question from the MMLU benchmark.
-Choose the single correct answer (A, B, C, or D). Respond only with the letter of the correct option.
+Choose the single correct answer (A, B, C, or D). Respond **only with the one letter** of the correct option.
 
 Question: {question}
 Options:
@@ -43,7 +43,7 @@ def ask_model(prompt):
         model="gpt-4o-mini",  # можно поменять на любую подходящую LLM
         messages=[{"role": "user", "content": prompt}],
         temperature=1.0,
-        extra_body={"reasoning_effort": "low"}
+        max_tokens=2048
     )
     return response.choices[0].message.content.strip()
 
@@ -64,7 +64,7 @@ def evaluate(prompt_template):
         )
 
         model_ans = ask_model(formatted)
-        # print(f"Q: {q}\nModel: {model_ans}, True: {ans}\n")
+        # print(f"Q: {q[:100]}...\nModel: {model_ans}, True: {ans}\n")
         if model_ans == ans:
             correct += 1
 
